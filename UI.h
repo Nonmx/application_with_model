@@ -1,0 +1,120 @@
+#include <stdint.h>
+
+#ifndef APPLICATION_PAARBAND_EXE_PAARBAND_SRC_UI_H_
+#define APPLICATION_PAARBAND_EXE_PAARBAND_SRC_UI_H_
+
+#define UI_MAX_MSGQ_COUNT	10
+#define UI_MAX_MSGQ_COUNT	10
+
+void PB_UI_init();
+int8_t PB_UI_event_send(uint8_t UI_evt, uint8_t UI_evt_state, uint8_t* msg);
+uint32_t PB_Get_UI_state();
+
+typedef struct {
+	uint8_t event;
+	uint8_t status;
+	uint8_t* msg;
+}pbUIEvt_t;
+
+//UI Event State
+
+
+enum
+
+{
+
+	UI_STATE_OFF = 0,
+
+	UI_STATE_CLOCK = 1,
+
+	UI_STATE_PEDOMETER,
+
+	UI_STATE_AFE,
+
+
+
+	UI_STATE_TEST,
+
+
+
+	UI_STATE_POPUP,
+
+
+
+	UI_STATE_POPUP_GLU,
+
+
+
+	UI_STATE_SCHEDULE_VIEWER,
+
+	UI_STATE_SCHEDULE_VIEWER_SUB,
+
+	UI_STATE_NOTIFICATION_VIEWER,
+
+	UI_STATE_NOTIFICATION_VIEWER_SUB,
+
+	UI_STATE_ACTIVITY_COUNT,
+
+
+
+	//2016.03.16 cms for BioCradle
+
+	UI_STATE_PLUGIN, //bio plugin
+
+	UI_STATE_BLE, //ble connection/disconnection
+
+
+
+	UI_STATE_HEALTHCARE_SETTING,
+
+
+
+	UI_STATE_SETTING_VIEWER,
+
+	UI_STATE_SETTING_VIEWER_DETAIL,
+
+	UI_STATE_SETTING_DEVICE_ID,
+
+	UI_STATE_SETTING_FIRMWARE_VERSION,
+
+	UI_STATE_SETTING_GLU_STRIP_CODE,
+
+	UI_STATE_PEDOMETER_TEST,
+
+	UI_STATE_ACC_TEST,
+
+	UI_STATE_AFE_TEST,
+
+
+
+	UI_STATE_CLOCK_NOT_QC_COMPLETE,
+
+
+
+
+
+	UI_STATE_QC_LCD_TEST,
+
+	UI_STATE_QC_MOT_TEST,
+
+	UI_STATE_QC_ACC_TEST,
+
+	UI_STATE_QC_FLASH_TEST,
+
+	UI_STATE_QC_RF_TEST,
+
+	UI_STATE_QC_BS_TEST,
+
+};
+
+
+
+enum {
+	BATTERY_LV_0_EMPTY = 0,
+	BATTERY_LV_1,
+	BATTERY_LV_2,
+	BATTERY_LV_3_FULL,
+	BATTERY_CHARGE
+};
+
+#endif

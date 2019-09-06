@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\application_source">
+      <UniqueIdentifier>{08a27b56-a85a-471b-a25b-889bb7242bd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\application_header">
+      <UniqueIdentifier>{187c8542-b4a1-4776-8cd8-8e09582f43f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\model_header">
+      <UniqueIdentifier>{bf343b15-7f62-49f0-8dbc-425af704c7db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\model_source">
+      <UniqueIdentifier>{d0352d54-4cd0-43c3-ac82-5ca41c40c87d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\non_necessary">
+      <UniqueIdentifier>{2ede96e0-c1ac-44c8-97df-d8494045c86a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PB_QC_i2c.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="initialize.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="kernel.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="messageQ.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="model.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="Msgq_WaitQ.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mutex_WaitQ.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="readyQ.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="Sem_WaitQ.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="Sleep_WaitQ.c">
+      <Filter>소스 파일\model_source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="PB_ble.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="PAARBand_Main.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="AFE4404.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="BMI160.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="nrf_drv_gpiote.c">
+      <Filter>소스 파일\non_necessary</Filter>
+    </ClCompile>
+    <ClCompile Include="PB_Glucose_uart.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="PB_i2c.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+    <ClCompile Include="softdevice_handler.c">
+      <Filter>소스 파일\application_source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PAARBand_Main.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="kernel.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="messageQ.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="Msgq_WaitQ.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mutex_WaitQ.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mylib.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="os.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="readyQ.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="Sem_WaitQ.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="Sleep_WaitQ.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="ubinos.h">
+      <Filter>헤더 파일\model_header</Filter>
+    </ClInclude>
+    <ClInclude Include="absconfig.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="PB_ble.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="softdevice_handler.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="PB_Glucose_uartMsg.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="PB_Glucose_uart.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="sw_config.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="hw_config.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="AFE4404.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="core_cm4.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="BMI_160.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="nrf_drv_config.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="nrf_drv_gpiote.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="nrf_gpio.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="PB_i2c.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="nrf_error.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="PB_QC_i2c.h">
+      <Filter>헤더 파일\application_header</Filter>
+    </ClInclude>
+    <ClInclude Include="time_clock.h">
+      <Filter>소스 파일\non_necessary</Filter>
+    </ClInclude>
+    <ClInclude Include="ubik_msgq.h">
+      <Filter>소스 파일\non_necessary</Filter>
+    </ClInclude>
+    <ClInclude Include="ubik_mutex.h">
+      <Filter>소스 파일\non_necessary</Filter>
+    </ClInclude>
+    <ClInclude Include="ubik_sem.h">
+      <Filter>소스 파일\non_necessary</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

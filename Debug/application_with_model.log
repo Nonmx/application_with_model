@@ -1,0 +1,21 @@
+﻿  AFE4404.c
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\AFE4404.c(415,45): warning C4018:  '>': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\AFE4404.c(428,25): warning C4018:  '>': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\AFE4404.c(446,44): warning C4018:  '>': signed 또는 unsigned가 일치하지 않습니다.
+  PAARBand_Main.c
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\AFE4404.c(545,25): warning C4018:  '>': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\PAARBand_Main.c(22,31): warning C4047:  '초기화 중': 'sem_pt'의 간접 참조 수준이 'void *'과(와) 다릅니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\PAARBand_Main.c(32,45): warning C4047:  '함수': 'uint8_t'의 간접 참조 수준이 'void *'과(와) 다릅니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\PAARBand_Main.c(32,45): warning C4024:  'PB_Main_event_send': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\PAARBand_Main.c(59,18): warning C4244:  '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\PAARBand_Main.c(93,18): warning C4244:  '함수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\PAARBand_Main.c(911,43): warning C4047:  '함수': 'uint8_t'의 간접 참조 수준이 'void *'과(와) 다릅니다.
+  main.c
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\PAARBand_Main.c(911,43): warning C4024:  'PB_UI_event_send': 형식 및 실제 매개 변수 2의 형식이 서로 다릅니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\main.c(33,16): warning C4013:  'PB_ble_stack'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\main.c(35,18): warning C4013:  'PB_ble_control'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\main.c(37,12): warning C4013:  'PB_Pulse'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\main.c(39,11): warning C4013:  'PB_Main'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  코드를 생성하고 있습니다...
+C:\Users\YangSong\source\repos\application_with_model\application_with_model\main.c(41,9): warning C4013:  'PB_UI'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  application_with_model.vcxproj -> C:\Users\YangSong\source\repos\application_with_model\Debug\application_with_model.exe
