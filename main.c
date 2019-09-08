@@ -20,6 +20,7 @@ int main()
 	printf("PB_PulseTask_init\n\n");
 	PB_PulseTask_int();
 
+	printf("ubik_comp_start\n\n");
 	ubik_comp_start();
 	
 	return 0;

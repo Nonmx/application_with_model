@@ -131,7 +131,7 @@ void set_smart_ct_service_enable(bool enable) {
 
 void AFE4404_Interface_Init(void) {
 	int r;
-
+	printf("create sem hAfe4404Sem\n\n");
 	r = sem_create(&hAfe4404Sem);
 	if (0 != r) {
 #if DEBUG
@@ -175,7 +175,11 @@ void AFE4404_Interface_Init(void) {
 		case 9:\
 			goto L_PB_PulseTask_9;break;\
 		case 10:\
-			goto L_PB_PulseTask_10; break; \
+			goto L_PB_PulseTask_10; break;\
+		case 11:\
+			goto L_PB_PulseTask_11;break;\
+		case 12:\
+			goto L_PB_PulseTask_12;break;\
 	}\
 }
 /*=====================PulseTask local var================================*/
@@ -230,48 +234,54 @@ L_PB_PulseTask_0:
 	{
 		current_pc[3] = 1;
 		// OS
+		printf("PB_Pulse task going to sleep\n\n");
 		task_sleep(100);
 		scheduler();
 		return;
 	L_PB_PulseTask_1:
 		;
 	}
+L_PB_PulseTask_2:
 
-	current_pc[3] = 2;
+	current_pc[3] = 3;
+	printf("PB_Pulse task going to create sem\n\n");
 	AFE4404_Interface_Init();
 	scheduler();
 	return;
 
-L_PB_PulseTask_2:
+L_PB_PulseTask_3:
 
 	//	nrf_gpio_pin_clear(BOARD_PIN_SPO2_PWR);
 
 		// OS
-	current_pc[3] = 3;
-	task_sleep(100);
-	scheduler();
-	return;
-
-L_PB_PulseTask_3:
-	//	nrf_gpio_pin_set(BOARD_PIN_SPO2_PWR);
-
-		// OS
 	current_pc[3] = 4;
+	printf("PB_Pulse task going to sleep\n\n");
 	task_sleep(100);
 	scheduler();
 	return;
 
 L_PB_PulseTask_4:
-
-	//	Board_AFE4404_Enable(false);
+	//	nrf_gpio_pin_set(BOARD_PIN_SPO2_PWR);
 
 		// OS
 	current_pc[3] = 5;
+	printf("PB_Pulse task going to sleep\n\n");
 	task_sleep(100);
 	scheduler();
 	return;
 
 L_PB_PulseTask_5:
+
+	//	Board_AFE4404_Enable(false);
+
+		// OS
+	current_pc[3] = 6;
+	printf("PB_Pulse task going to sleep\n\n");
+	task_sleep(100);
+	scheduler();
+	return;
+
+L_PB_PulseTask_6:
 	;
 
 
@@ -312,7 +322,8 @@ L_PB_PulseTask_5:
 	for (;;)
 	{
 		// OS
-		current_pc[3] = 6;
+		current_pc[3] = 7;
+		printf("PB_Pulse task task sem hAfe4404Sem\n\n");
 		r = sem_take(hAfe4404Sem);
 		if (0 != r) {
 #if DEBUG
@@ -321,15 +332,16 @@ L_PB_PulseTask_5:
 		}
 		scheduler();
 		return;
-	L_PB_PulseTask_6:
+	L_PB_PulseTask_7:
 
-		current_pc[3] = 7;
+		current_pc[3] = 8;
 		// OS
+		printf("PB_Pulse task lock mutex mutex_AFE\n\n");
 		mutex_lock(mutex_AFE);
 		scheduler();
 		return;
 
-	L_PB_PulseTask_7:
+	L_PB_PulseTask_8:
 
 #if 1
 		switch (button_flag) {
@@ -465,11 +477,12 @@ L_PB_PulseTask_5:
 							temp_scale_lf_hp = scale_lp_hp;
 							EQZ_value = nomarlizedEQZ(scale_lp_hp); // NOMARLIZED scale_lp_hp(range : 2..10)
 
+							printf("PB_Main_event_send(PB_AFE_EVT, PB_AFE_EQZ_EVT_ST, NULL);\n\n");
 							PB_Main_event_send(PB_AFE_EVT, PB_AFE_EQZ_EVT_ST, NULL);
 							scheduler();
-							current_pc[3] = 8;
+							current_pc[3] = 9;
 							return;
-						L_PB_PulseTask_8:
+						L_PB_PulseTask_9:
 
 
 							switch (hrcnt) {
@@ -600,7 +613,13 @@ L_PB_PulseTask_5:
 
 					if (PB_Get_UI_state() == UI_STATE_AFE && wear_enable == 1)
 					{
+						current_pc[3] = 10;
+						printf("PB_Main_event_send(PB_AFE_EVT, PB_AFE_NO_SIG_EVT_ST, NULL);\n\n");
 						PB_Main_event_send(PB_AFE_EVT, PB_AFE_NO_SIG_EVT_ST, NULL);
+						scheduler();
+						return;
+						L_PB_PulseTask_10:
+
 						wear_enable = 0;
 					}
 				}
@@ -611,11 +630,12 @@ L_PB_PulseTask_5:
 			button_flag = button_OFF_State;
 
 			// OS
+			printf("PB_Pulse task sleep\n\n");
 			task_sleep(100);
 			scheduler();
-			current_pc[3] = 9;
+			current_pc[3] = 11;
 			return;
-		L_PB_PulseTask_9:
+		L_PB_PulseTask_11:
 
 			break;
 		case button_OFF_State:
@@ -623,12 +643,13 @@ L_PB_PulseTask_5:
 		}
 #endif
 		// OS
-		current_pc[3] = 10;
+		current_pc[3] = 12;
+		printf("PB_Pulse task unlock mutex mutex_AFE\n\n");
 		mutex_unlock(mutex_AFE);
 		scheduler();
 		return;
 
-	L_PB_PulseTask_10:
+	L_PB_PulseTask_12:
 		;
 	}
 
@@ -644,6 +665,7 @@ void PB_PulseTask_int(void) {
 	int r;
 
 	// OS
+	printf("create PB_Pulse task\n\n");
 	r = task_create(3);
 	if (0 != r) {
 #if DEBUG
@@ -652,6 +674,7 @@ void PB_PulseTask_int(void) {
 	}
 
 	// OS
+	printf("create mutex mutexAFE\n\n");
 	r = mutex_create(&mutex_AFE);
 	if (0 != r) {
 #if DEBUG
@@ -660,6 +683,7 @@ void PB_PulseTask_int(void) {
 	}
 
 	// OS
+	printf("create mutex prms_AFE\n\n");
 	r = mutex_create(&prms_AFE);
 	if (0 != r) {
 #if DEBUG

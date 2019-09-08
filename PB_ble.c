@@ -183,6 +183,7 @@ L_PB_ble_control_task_0:
 	for (;;) {
 		// OS
 		current_pc[2] = 1;
+		printf("PB_ble_control -> msgq_receive(BLE_Msgq, (unsigned char*)& BLE_msgRxBuffer);\n\n");
 		msgq_receive(BLE_Msgq, (unsigned char*)& BLE_msgRxBuffer);
 		scheduler();
 		return;
@@ -198,6 +199,7 @@ L_PB_ble_control_task_0:
 			case PB_BLE_EVT: {
 				switch (BLE_msgRxBuffer.status) {
 				case PB_BLE_CONNECTION_EVT_ST:
+					printf("PB_ble_control -> PB_Main_event_send(PB_BLE_EVT, PB_BLE_CONNECTION_EVT_ST, NULL);\n\n");
 					PB_Main_event_send(PB_BLE_EVT, PB_BLE_CONNECTION_EVT_ST, NULL);
 					scheduler();
 					current_pc[2] = 2;
@@ -206,6 +208,7 @@ L_PB_ble_control_task_0:
 					break;
 
 				case PB_BLE_DISCONNECTION_EVT_ST: {
+					printf("PB_ble_control -> PB_Main_event_send(PB_BLE_EVT, PB_BLE_DISCONNECTION_EVT_ST, NULL);\n\n");
 					PB_Main_event_send(PB_BLE_EVT, PB_BLE_DISCONNECTION_EVT_ST, NULL);
 					scheduler();
 					current_pc[2] = 3;
@@ -217,6 +220,7 @@ L_PB_ble_control_task_0:
 				case PB_BLE_PACKET_REV_EVT_ST: {
 					// temporary call of PB_Main_event_send instead of PB_IncomingPacketHandler
 					// PB_IncomingPacketHandler(BLE_msgRxBuffer.msg);
+					printf("PB_ble_control -> PB_Main_event_send(PB_BLE_EVT, PB_BLE_PACKET_REV_EVT_ST, NULL);\n\n");
 					PB_Main_event_send(PB_BLE_EVT, PB_BLE_PACKET_REV_EVT_ST, NULL);
 					scheduler();
 					current_pc[2] = 4;
@@ -233,6 +237,7 @@ L_PB_ble_control_task_0:
 					// temporary call of PB_Main_event_send instead of PB_smart_ct_data_send
 					// PB_IncomingPacketHandler(BLE_msgRxBuffer.msg);
 					// PB_smart_ct_data_send(BLE_msgRxBuffer.msg);
+					printf("PB_ble_control -> PB_Main_event_send(PB_BLE_EVT, PB_BLE_PACKET_REV_EVT_ST, NULL);\n\n");
 					PB_Main_event_send(PB_BLE_EVT, PB_BLE_SMART_CT_DATA_SEND_EVT_ST, NULL);
 					scheduler();
 					current_pc[2] = 5;

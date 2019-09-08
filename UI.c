@@ -63,6 +63,7 @@ void PB_UI_init() {
 
 	//msgq_create : UI msgq
 	// OS
+	printf("create msgq uiMsgq\n\n");
 	r = msgq_create(&uiMsgq, sizeof(pbUIEvt_t), UI_MAX_MSGQ_COUNT);
 	if (0 != r) {
 #if DEBUG
@@ -70,6 +71,7 @@ void PB_UI_init() {
 #endif
 	}
 
+	printf("create UI task\n\n");
 	r = task_create(5); //PB_UI_Task
 	if (0 != r) {
 #if DEBUG
@@ -79,7 +81,7 @@ void PB_UI_init() {
 }
 
 #define JUMP_PB_UI_task(){\
-	switch (current_pc[PB_UI_Task])\
+	switch (current_pc[5])\
 	{\
 		case 0:\
 			goto L_PB_UI_Task_0;break;\
@@ -119,6 +121,7 @@ L_PB_UI_Task_0:
 	while (get_main_task_init_ready() == 0) {
 		// OS
 		current_pc[5] = 1;
+		printf("UI task sleep\n\n");
 		task_sleep(100);
 		scheduler();
 		return;
@@ -129,6 +132,7 @@ L_PB_UI_Task_0:
 	// OS
 L_PB_UI_Task_2:
 	current_pc[5] = 3;
+	printf("UI task sleep\n\n");
 	task_sleep(100);
 	scheduler();
 	return;
@@ -141,9 +145,11 @@ L_PB_UI_Task_3:
 	for (;;) {
 		// OS
 		current_pc[5] = 4;
+		printf("UI task -> msgq_receive(uiMsgq, (unsigned char*)& UI_msgRxBuffer);\n\n");
 		r = msgq_receive(uiMsgq, (unsigned char*)& UI_msgRxBuffer);
 		scheduler();
 		return;
+
 	L_PB_UI_Task_4:
 
 		if (0 != r) {
@@ -154,10 +160,12 @@ L_PB_UI_Task_3:
 		else {
 			switch (UI_msgRxBuffer.event) {
 			case PB_KEY_CHANGE_EVT:
+				printf("UI task -> processing_keychange_evt(UI_msgRxBuffer)\n\n");
 				processing_keychange_evt(UI_msgRxBuffer);//msg send
 				scheduler();
 				current_pc[5] = 5;
 				return;
+
 			L_PB_UI_Task_5:
 
 				break;
@@ -168,6 +176,7 @@ L_PB_UI_Task_3:
 				//					processing_lcd_timeout_evt();
 				break;
 			case PB_TIME_EVT:
+				printf("UI task -> PB_AlarmControl()\n\n");
 				PB_AlarmControl(); //msg send
 				scheduler();
 				current_pc[5] = 6;
@@ -180,6 +189,7 @@ L_PB_UI_Task_3:
 				}
 
 				//PB_UI_event_send(PB_UI_REFRESH_EVT, NULL, NULL);
+				printf("UI task -> PB_UI_event_send(PB_UI_REFRESH_EVT, 0, 0);\n\n");
 				PB_UI_event_send(PB_UI_REFRESH_EVT, 0, 0);
 				scheduler();
 				current_pc[5] = 7;
@@ -213,6 +223,7 @@ L_PB_UI_Task_3:
 
 				break;
 			case PB_GLUCOSE_EVT:
+				printf("UI task -> processing_glucose_uart_evt(UI_msgRxBuffer);\n\n");
 				processing_glucose_uart_evt(UI_msgRxBuffer);//msg send
 				scheduler();
 				current_pc[5] = 8;
@@ -257,6 +268,7 @@ L_PB_UI_Task_3:
 
 				break;
 			case PB_QC_EVT:
+				printf("UI task -> processing_qc_msg_evt(UI_msgRxBuffer);\n\n");
 				processing_qc_msg_evt(UI_msgRxBuffer); //msg send or sleep
 				scheduler();
 				current_pc[5] = 9;

@@ -39,6 +39,7 @@ uint8_t PB_Main_event_send(uint8_t Main_evt, uint8_t Main_evt_state, uint8_t* ms
 	temp_msg.event = Main_evt;
 	temp_msg.status = Main_evt_state;
 	temp_msg.msg = msg;
+	printf("the msg is %s\n",msg);
 
 	// OS
 	msgq_send(Main_Msgq, (unsigned char*)& temp_msg);
@@ -104,6 +105,7 @@ void PB_PAARBand_Main_init() {
 
 	//msgq_create : UI msgq
 	// OS
+	printf("create msgq Main_Msgq\n\n");
 	r = msgq_create(&Main_Msgq, sizeof(pbMainEvt_t), UI_MAX_MSGQ_COUNT);
 	if (0 != r) {
 #if DEBUG
@@ -114,6 +116,7 @@ void PB_PAARBand_Main_init() {
 	//	PB_spi_init();
 
 		// OS
+	printf("create task MainTask\n\n");
 	r = task_create(4);//Main Task
 	if (0 != r) {
 #if DEBUG
@@ -207,6 +210,8 @@ void PB_PAARBand_Main_init() {
 			goto L_PB_Main_Task_38;break;\
 		case 39:\
 			goto L_PB_Main_Task_39;break;\
+		case 40:\
+			goto L_PB_Main_Task_40;break;\
 	}\
 }
 
@@ -242,6 +247,7 @@ L_PB_Main_Task_0:
 
 		// OS
 	current_pc[4] = 1;
+	printf("PB_Main going to sleep\n\n");
 	task_sleep(100);
 	scheduler();
 	return;
@@ -270,6 +276,7 @@ L_PB_Main_Task_1:
 
 		// OS
 	current_pc[4] = 2;
+	printf("PB_Main going to sleep\n\n");
 	task_sleep(100);
 	scheduler();
 	return;
@@ -288,7 +295,7 @@ L_PB_Main_Task_2:
 	// OS
 	//current_pc[PB_Main_Task] = 3;
 	//task_sleep(100);
-	scheduler();
+	//scheduler();
 	//return;
 
 	//	nrf_gpio_pin_set(BOARD_PIN_SUB_PWR);
@@ -297,7 +304,7 @@ L_PB_Main_Task_2:
 
 		// OS
 	//current_pc[PB_Main_Task] = 4;
-	task_sleep(300);
+	//task_sleep(300);
 	//scheduler();
 	//return;
 //L_PB_Main_Task_4:
@@ -344,9 +351,11 @@ L_PB_Main_Task_2:
 
 	// OS
 	current_pc[4] = 3;
+	printf("create sem _uart_tx_evt_sem\n\n");
 	r = sem_create(&_uart_tx_evt_sem);
 	scheduler();
 	return;
+
 L_PB_Main_Task_3:
 
 	if (0 != r) {
@@ -401,7 +410,7 @@ L_PB_Main_Task_3:
 
 		// OS
 	//current_pc[PB_Main_Task] = 7;
-	task_sleep(50);
+	//task_sleep(50);
 	//scheduler();
 	//return;
 
@@ -415,7 +424,7 @@ L_PB_Main_Task_3:
 
 		// OS
 	//current_pc[PB_Main_Task] = 8;
-	task_sleep(50);
+	//task_sleep(50);
 	//scheduler();
 	//return;
 
@@ -474,6 +483,7 @@ L_PB_Main_Task_3:
 
 	main_task_init_ready = 1;
 	current_pc[4] = 4;
+	printf("Main task -> PB_BLE_event_send(PB_BLE_CONTROL_EVT, PB_BLE_REFRESH, NULL);\n\n");
 	PB_BLE_event_send(PB_BLE_CONTROL_EVT, PB_BLE_REFRESH, NULL);
 	scheduler();
 	return;
@@ -493,7 +503,8 @@ L_PB_Main_Task_4:
 
 	while (1) {
 		// OS
-		current_pc[PB_Main_Task] = 5;
+		current_pc[4] = 5;
+		printf("Main task -> msgq_receive(Main_Msgq, (unsigned char*)& Main_msgRxBuffer)\n\n");
 		r = msgq_receive(Main_Msgq, (unsigned char*)& Main_msgRxBuffer);
 		scheduler();
 		return;
@@ -523,7 +534,7 @@ L_PB_Main_Task_4:
 					;
 				}
 				else {*/
-
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 					PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 					scheduler();
 					current_pc[4] = 7;
@@ -536,6 +547,8 @@ L_PB_Main_Task_4:
 				break;
 			case PB_BATT_EVT:
 				if (PB_Get_UI_state() != UI_STATE_AFE) {
+
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 					PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 					scheduler();
 					current_pc[4] = 8;
@@ -548,6 +561,7 @@ L_PB_Main_Task_4:
 				break;
 			case PB_TIME_EVT:
 				if (PB_Get_UI_state() != UI_STATE_AFE) {
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);");
 					PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 					scheduler();
 					current_pc[4] = 9;
@@ -560,6 +574,7 @@ L_PB_Main_Task_4:
 				break;
 			case PB_BLE_EVT:
 				if (Main_msgRxBuffer.status == PB_BLE_DISCONNECTION_EVT_ST) {
+					printf("Main task -> PB_STOP_SMART_CT();");
 					PB_STOP_SMART_CT(); // msg send
 					scheduler();
 					current_pc[4] = 10;
@@ -570,6 +585,7 @@ L_PB_Main_Task_4:
 				}
 
 				if (PB_Get_UI_state() != UI_STATE_AFE) {
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n");
 					PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 					scheduler();
 					current_pc[4] = 11;
@@ -586,7 +602,7 @@ L_PB_Main_Task_4:
 						add_AFE_HR_data(temp_HR_output);
 					}
 				}
-
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 12;
@@ -595,6 +611,7 @@ L_PB_Main_Task_4:
 				break;
 
 			case PB_POPUP_EVT:
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 13;
@@ -603,6 +620,7 @@ L_PB_Main_Task_4:
 				break;
 
 			case PB_ALARM_EVT:
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 14;
@@ -669,6 +687,7 @@ L_PB_Main_Task_4:
 				switch (Main_msgRxBuffer.status) {
 				case PB_PNIP_SESSION_TIMEOUT:
 					//							Session_stop();
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 					PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, NULL);
 					scheduler();
 					current_pc[4] = 15;
@@ -677,6 +696,7 @@ L_PB_Main_Task_4:
 					break;
 
 				case PB_PNIP_SESSION_REFRESH:
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 					PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, NULL);
 					scheduler();
 					current_pc[4] = 16;
@@ -684,6 +704,7 @@ L_PB_Main_Task_4:
 				L_PB_Main_Task_16:
 					break;
 				}
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 17;
@@ -692,6 +713,7 @@ L_PB_Main_Task_4:
 				break;
 
 			case PB_ACTIVITY_EVT:
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 18;
@@ -703,7 +725,7 @@ L_PB_Main_Task_4:
 				break;
 			case PB_GLUCOSE_EVT:
 
-
+				printf("Main task -> PB_UART_Read_Loop(Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				err = PB_UART_Read_Loop(Main_msgRxBuffer.status, Main_msgRxBuffer.msg);//msg send
 				if (err == 1)
 					PB_stop_BS_stable_timer();
@@ -715,6 +737,8 @@ L_PB_Main_Task_4:
 			case PB_AFE_CHECK_EVT:
 				break;
 			case PB_PAAR_TAG_EVT:
+
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 20;
@@ -722,6 +746,7 @@ L_PB_Main_Task_4:
 			L_PB_Main_Task_20:
 				break;
 			case PB_PEDOMETER_EVT:
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 21;
@@ -732,6 +757,7 @@ L_PB_Main_Task_4:
 			case PB_SMART_CAR_TALK_EVT:
 				switch (Main_msgRxBuffer.status) {
 				case PB_SMART_CAR_TALK_ALARM_ST:
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 					PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 					scheduler();
 					current_pc[4] = 22;
@@ -740,6 +766,7 @@ L_PB_Main_Task_4:
 					break;
 
 				case PB_SMART_CAR_TALK_DATA_EVT_ST:
+					printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 					PB_BLE_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 					scheduler();
 					current_pc[4] = 23;
@@ -756,6 +783,7 @@ L_PB_Main_Task_4:
 				break;
 			case PB_TEST_MSG_EVT:
 			{
+				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
 				current_pc[4] = 24;
@@ -768,6 +796,7 @@ L_PB_Main_Task_4:
 				switch (Main_msgRxBuffer.status)
 				{
 				case PB_QC_PACKET_REV_ST:
+					printf("Main task -> PB_rev_qc_msg()\n\n");
 					PB_rev_qc_msg();//sleep or msg send
 					scheduler();
 					current_pc[4] = 25;
@@ -785,6 +814,7 @@ L_PB_Main_Task_4:
 				case PB_QC_TEST_START_BS_ST:
 				case PB_QC_TEST_START_ALL_ST:
 				case PB_QC_TEST_END_ST:
+					printf("Main task -> PB_process_qc_evt(Main_msgRxBuffer);\n\n", );
 					PB_process_qc_evt(Main_msgRxBuffer);//msg send
 					scheduler();
 					current_pc[4] = 26;
@@ -793,6 +823,7 @@ L_PB_Main_Task_4:
 					break;
 					//LCD test result
 				case PB_QC_TEST_RESULT_SUCCESS_LCD_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_LCD_ST, true);\n\n", );
 					PB_send_qc_result(PB_QC_TEST_START_LCD_ST, true); //msg send
 					scheduler();
 					current_pc[4] = 27;
@@ -801,87 +832,106 @@ L_PB_Main_Task_4:
 
 					break;
 				case PB_QC_TEST_RESULT_FAIL_LCD_ST:
-					PB_send_qc_result(PB_QC_TEST_START_LCD_ST, false);
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_LCD_ST, true);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_LCD_ST, true);
 					scheduler();
 					current_pc[4] = 28;
 					return;
-				L_PB_Main_Task_28:
+
+					L_PB_Main_Task_28:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_LCD_ST, false);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_LCD_ST, false);
+					scheduler();
+					current_pc[4] = 29;
+					return;
+
+				L_PB_Main_Task_29:
 
 					break;
 					//MOT test result
 				case PB_QC_TEST_RESULT_SUCCESS_MOT_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_MOT_ST, true);\n");
 					PB_send_qc_result(PB_QC_TEST_START_MOT_ST, true);
-					scheduler();
-					current_pc[4] = 29;
-					return;
-				L_PB_Main_Task_29:
-					break;
-				case PB_QC_TEST_RESULT_FAIL_MOT_ST:
-					PB_send_qc_result(PB_QC_TEST_START_MOT_ST, false);
 					scheduler();
 					current_pc[4] = 30;
 					return;
 				L_PB_Main_Task_30:
 					break;
-					//FLASH test result
-				case PB_QC_TEST_RESULT_SUCCESS_FLASH_ST:
-					PB_send_qc_result(PB_QC_TEST_START_FLASH_ST, true);
+				case PB_QC_TEST_RESULT_FAIL_MOT_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_MOT_ST, false);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_MOT_ST, false);
 					scheduler();
 					current_pc[4] = 31;
 					return;
 				L_PB_Main_Task_31:
 					break;
-				case PB_QC_TEST_RESULT_FAIL_FLASH_ST:
-					PB_send_qc_result(PB_QC_TEST_START_FLASH_ST, false);
+					//FLASH test result
+				case PB_QC_TEST_RESULT_SUCCESS_FLASH_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_MOT_ST, true);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_FLASH_ST, true);
 					scheduler();
 					current_pc[4] = 32;
 					return;
 				L_PB_Main_Task_32:
 					break;
-					//RF test result
-				case PB_QC_TEST_RESULT_SUCCESS_RF_ST:
-					PB_send_qc_result(PB_QC_TEST_START_RF_ST, true);
+				case PB_QC_TEST_RESULT_FAIL_FLASH_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_FLASH_ST, false);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_FLASH_ST, false);
 					scheduler();
 					current_pc[4] = 33;
 					return;
 				L_PB_Main_Task_33:
 					break;
-				case PB_QC_TEST_RESULT_FAIL_RF_ST:
-					PB_send_qc_result(PB_QC_TEST_START_RF_ST, false);
+					//RF test result
+				case PB_QC_TEST_RESULT_SUCCESS_RF_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_RF_ST, true);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_RF_ST, true);
 					scheduler();
 					current_pc[4] = 34;
 					return;
 				L_PB_Main_Task_34:
 					break;
-					//ACC test result
-				case PB_QC_TEST_RESULT_SUCCESS_ACC_ST:
-					PB_send_qc_result(PB_QC_TEST_START_ACC_ST, true);
+				case PB_QC_TEST_RESULT_FAIL_RF_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_RF_ST, false);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_RF_ST, false);
 					scheduler();
 					current_pc[4] = 35;
 					return;
 				L_PB_Main_Task_35:
 					break;
-				case PB_QC_TEST_RESULT_FAIL_ACC_ST:
-					PB_send_qc_result(PB_QC_TEST_START_ACC_ST, false);
+					//ACC test result
+				case PB_QC_TEST_RESULT_SUCCESS_ACC_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_ACC_ST, true);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_ACC_ST, true);
 					scheduler();
 					current_pc[4] = 36;
 					return;
 				L_PB_Main_Task_36:
 					break;
-					//ACC test result
-				case PB_QC_TEST_RESULT_SUCCESS_BS_ST:
-					PB_send_qc_result(PB_QC_TEST_START_BS_ST, true);
+				case PB_QC_TEST_RESULT_FAIL_ACC_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_ACC_ST, false);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_ACC_ST, false);
 					scheduler();
 					current_pc[4] = 37;
 					return;
 				L_PB_Main_Task_37:
 					break;
-				case PB_QC_TEST_RESULT_FAIL_BS_ST:
-					PB_send_qc_result(PB_QC_TEST_START_BS_ST, false);
+					//ACC test result
+				case PB_QC_TEST_RESULT_SUCCESS_BS_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_BS_ST, true);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_BS_ST, true);
 					scheduler();
 					current_pc[4] = 38;
 					return;
 				L_PB_Main_Task_38:
+					break;
+				case PB_QC_TEST_RESULT_FAIL_BS_ST:
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_BS_ST, false);\n\n");
+					PB_send_qc_result(PB_QC_TEST_START_BS_ST, false);
+					scheduler();
+					current_pc[4] = 39;
+					return;
+				L_PB_Main_Task_39:
 					break;
 				}
 				break;
@@ -891,7 +941,7 @@ L_PB_Main_Task_4:
 				break;
 			}
 		}
-	L_PB_Main_Task_39:
+	L_PB_Main_Task_40:
 		;
 	}
 
