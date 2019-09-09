@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 author: yangsong
 */
 
@@ -97,8 +97,8 @@ typedef struct
 }WQ;
 
 typedef struct {
-	int flag;// -1 = mutex ¾ø´Ù, 0 = unlocked, 1 = locked
-	char owner;//locked °¡Áö°í ÀÖ´Â  task
+	int flag;// -1 = mutex ï¿½ï¿½ï¿½ï¿½, 0 = unlocked, 1 = locked
+	char owner;//locked ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½  task
 	int lock_counter;
 	int lock_call[NUM_OF_TASKS + 1];
 	int prio_inheri_flag;

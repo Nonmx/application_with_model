@@ -248,7 +248,7 @@ L_PB_Main_Task_0:
 		// OS
 	current_pc[4] = 1;
 	printf("PB_Main going to sleep\n\n");
-	task_sleep(100);
+	task_sleep(5);
 	scheduler();
 	return;
 
@@ -277,7 +277,7 @@ L_PB_Main_Task_1:
 		// OS
 	current_pc[4] = 2;
 	printf("PB_Main going to sleep\n\n");
-	task_sleep(100);
+	task_sleep(5);
 	scheduler();
 	return;
 
@@ -512,7 +512,7 @@ L_PB_Main_Task_4:
 	L_PB_Main_Task_5:
 
 
-		if (0 != r) {
+		if (-1 == r) {
 #if DEBUG
 			printf("fail at msgq_receive\r\n");
 #endif
@@ -814,7 +814,7 @@ L_PB_Main_Task_4:
 				case PB_QC_TEST_START_BS_ST:
 				case PB_QC_TEST_START_ALL_ST:
 				case PB_QC_TEST_END_ST:
-					printf("Main task -> PB_process_qc_evt(Main_msgRxBuffer);\n\n", );
+					printf("Main task -> PB_process_qc_evt(Main_msgRxBuffer);\n\n");
 					PB_process_qc_evt(Main_msgRxBuffer);//msg send
 					scheduler();
 					current_pc[4] = 26;
@@ -823,7 +823,7 @@ L_PB_Main_Task_4:
 					break;
 					//LCD test result
 				case PB_QC_TEST_RESULT_SUCCESS_LCD_ST:
-					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_LCD_ST, true);\n\n", );
+					printf("Main task -> PB_send_qc_result(PB_QC_TEST_START_LCD_ST, true);\n\n");
 					PB_send_qc_result(PB_QC_TEST_START_LCD_ST, true); //msg send
 					scheduler();
 					current_pc[4] = 27;

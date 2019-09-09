@@ -85,7 +85,7 @@ int push_sem_task_into_WQ(unsigned char tid, unsigned char p, sem_pt sid)
 		//printf("task_state[tid][act_counter[tid]] = %d \n", task_state[tid]);
 		sem_list[sid].semQ[sem_list[sid].Rear].tid = tid;
 		task_dyn_info[sem_list[sid].semQ[sem_list[sid].Rear].tid].dyn_prio = p;
-
+		//printf("%d",sem_list[sid].semQ[sem_list[sid].Rear].tid);
 
 		sem_list[sid].Rear = (1 + sem_list[sid].Rear) % (NUM_OF_TASKS + 1);
 		if ((sem_list[sid].Rear - sem_list[sid].Front + (NUM_OF_TASKS + 1)) % (NUM_OF_TASKS + 1) > 1)//More than one element, sorting

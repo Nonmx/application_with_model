@@ -5,6 +5,8 @@
 
 	unsigned int		reserved2 : 16;
 } _msgq_tip_t;
+
+
 */
 /** ޽ť    */
 //typedef	_msgq_tip_t* msgq_pt;

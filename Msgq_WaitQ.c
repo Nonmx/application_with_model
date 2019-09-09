@@ -81,6 +81,7 @@ int push_msgq_task_into_WQ(unsigned char tid, unsigned char p, msgq_pt msid)
 		//printf("task_state[tid][act_counter[tid]] = %d \n", task_state[tid]);
 		msgq_list[msid].msgqQ[msgq_list[msid].Rear].tid = tid;
 		task_dyn_info[msgq_list[msid].msgqQ[msgq_list[msid].Rear].tid].dyn_prio = p;
+		printf("%d", msgq_list[msid].msgqQ[msgq_list[msid].Rear].tid);
 
 		msgq_list[msid].Rear = (1 + msgq_list[msid].Rear) % (NUM_OF_TASKS + 1);
 		if ((msgq_list[msid].Rear - msgq_list[msid].Front + (NUM_OF_TASKS + 1)) % (NUM_OF_TASKS + 1) > 1)//More than one element, sorting

@@ -112,6 +112,7 @@ void PB_UI_init() {
 int r;
 extern int8_t PB_UI_event_send(uint8_t UI_evt, uint8_t UI_evt_state, uint8_t* msg);
 //static void TASK(5) { // PB_UI_Task
+pbUIEvt_t UI_msgRxBuffer;
 void PB_UI()
 {
 	JUMP_PB_UI_task();
@@ -122,7 +123,7 @@ L_PB_UI_Task_0:
 		// OS
 		current_pc[5] = 1;
 		printf("UI task sleep\n\n");
-		task_sleep(100);
+		task_sleep(5);
 		scheduler();
 		return;
 
@@ -133,14 +134,14 @@ L_PB_UI_Task_0:
 L_PB_UI_Task_2:
 	current_pc[5] = 3;
 	printf("UI task sleep\n\n");
-	task_sleep(100);
+	task_sleep(5);
 	scheduler();
 	return;
 
 L_PB_UI_Task_3:
 	PB_UI_default_draw();
 
-	pbUIEvt_t UI_msgRxBuffer;
+	
 
 	for (;;) {
 		// OS
@@ -152,7 +153,7 @@ L_PB_UI_Task_3:
 
 	L_PB_UI_Task_4:
 
-		if (0 != r) {
+		if ( -1 == r) {
 #if DEBUG
 			printf("fail at msgq_receive\n");
 #endif
@@ -281,9 +282,10 @@ L_PB_UI_Task_3:
 			if (UI_msgRxBuffer.msg != NULL) {
 				free(UI_msgRxBuffer.msg);
 			}
+		L_PB_UI_Task_10:
+			;
 		}
-	L_PB_UI_Task_10:
-		;
+
 	}
 
 	current_pc[PB_UI_Task] = 0;

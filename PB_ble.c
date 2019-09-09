@@ -138,14 +138,17 @@ void on_ble_evt() {
 	}
 }
 
+
+pbBLEEvt_t temp_msg;
+
 uint8_t PB_BLE_event_send(uint8_t UI_evt, uint8_t UI_evt_state, uint8_t* msg) {
-	pbBLEEvt_t temp_msg;
+	
 	temp_msg.event = UI_evt;
 	temp_msg.status = UI_evt_state;
 	temp_msg.msg = msg;
 
 	// OS
-	msgq_send(BLE_Msgq, (unsigned char*)& temp_msg);
+	msgq_send(BLE_Msgq, (unsigned char*)& temp_msg); // ?
 
 	return 0;
 
@@ -189,7 +192,7 @@ L_PB_ble_control_task_0:
 		return;
 	L_PB_ble_control_task_1:
 
-		if (0 != r) {
+		if (-1 == r) {
 #if DEBUG
 			printf("fail at msgq_receive\r\n");
 #endif

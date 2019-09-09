@@ -187,8 +187,8 @@ int scheduler() {
 
 
 	multi_time_checker();
-
-	if (is_idle() || api_name == API_TerminateTask || api_name == API_mutex_lock || api_name == API_sem_take || api_name == API_msgq_send || api_name == API_task_sleep)
+	
+	if (is_idle()&& !(is_sleeping()) || api_name == API_TerminateTask || api_name == API_mutex_lock || api_name == API_sem_take || api_name == API_task_sleep ||api_name ==API_msgq_receive)
 	{
 		api_name = -1;
 		get_task_from_readyQ(&current_tid, &current_prio);

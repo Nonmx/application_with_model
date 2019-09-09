@@ -34,12 +34,16 @@ void running()
 			PB_ble_stack();
 		else if (current_tid == 2) //PB_ble_control_task
 			PB_ble_control();
-		else if (current_tid == 3) // PB_PulseTask
-			PB_Pulse();
+		else if (current_tid == 3) //PB_UI_Task 	
+			PB_UI();
 		else if (current_tid == 4) // PB_Main_Task
 			PB_Main();
-		else if (current_tid == 5) // PB_UI_Task
-			PB_UI();
+		else if (current_tid == 5) // PB_PulseTask
+			PB_Pulse();
 
+		if (current_tid == 0)
+		{
+			scheduler();
+		}
 	}
 }

@@ -235,7 +235,7 @@ L_PB_PulseTask_0:
 		current_pc[3] = 1;
 		// OS
 		printf("PB_Pulse task going to sleep\n\n");
-		task_sleep(100);
+		task_sleep(5);
 		scheduler();
 		return;
 	L_PB_PulseTask_1:
@@ -256,7 +256,7 @@ L_PB_PulseTask_3:
 		// OS
 	current_pc[3] = 4;
 	printf("PB_Pulse task going to sleep\n\n");
-	task_sleep(100);
+	task_sleep(5);
 	scheduler();
 	return;
 
@@ -266,7 +266,7 @@ L_PB_PulseTask_4:
 		// OS
 	current_pc[3] = 5;
 	printf("PB_Pulse task going to sleep\n\n");
-	task_sleep(100);
+	task_sleep(5);
 	scheduler();
 	return;
 
@@ -277,7 +277,7 @@ L_PB_PulseTask_5:
 		// OS
 	current_pc[3] = 6;
 	printf("PB_Pulse task going to sleep\n\n");
-	task_sleep(100);
+	task_sleep(5);
 	scheduler();
 	return;
 

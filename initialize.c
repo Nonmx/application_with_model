@@ -20,9 +20,9 @@ void initialize() {
 	task_static_info[2].prio = 2;
 	task_dyn_info[2].dyn_prio = task_static_info[2].prio;
 
-	//PB_PulseTask
+	//PB_UI_Task
 	task_static_info[3].max_act_cnt = 1;
-	task_static_info[3].prio = 2;
+	task_static_info[3].prio = 1;
 	task_dyn_info[3].dyn_prio = task_static_info[3].prio;
 
 	//PB_Main_Task
@@ -30,9 +30,9 @@ void initialize() {
 	task_static_info[4].prio = 1;
 	task_dyn_info[4].dyn_prio = task_static_info[4].prio;
 
-	//PB_UI_Task
+	//PB_PulseTask
 	task_static_info[5].max_act_cnt = 1;
-	task_static_info[5].prio = 1;
+	task_static_info[5].prio = 2;
 	task_dyn_info[5].dyn_prio = task_static_info[5].prio;
 
 
@@ -88,6 +88,10 @@ void initialize() {
 		task_dyn_info[i].Msgq_Id = 0;
 		task_dyn_info[i].Mutex_Id = 0;
 		task_dyn_info[i].Sem_Id = 0;
+
+		//task_dyn_info[i].buf[i].event = -1;
+		//task_dyn_info[i].buf[i].status = -1;
+		//task_dyn_info[i].buf[i].msg = NULL;
 
 		sem_list[1].sem_timed_info[i] = -1;
 		sem_list[1].sem_timed_flag[i] = -1;

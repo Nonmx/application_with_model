@@ -15,7 +15,7 @@ static __inline char is_idle()
 {
 	char a = 0;
 	int i;
-	for (i = 1; i < NUM_OF_TASKS + 1; i++)
+	for (i = 0; i < NUM_OF_TASKS + 1; i++)
 	{
 		if (task_state[i] == Running)
 			a++;
