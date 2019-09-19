@@ -12,7 +12,7 @@
 
 extern int scheduler();
 //2015.11.20 cms For Heartrate
-//#define RAW_MIN 700000 //Raw data min
+//#define RAW_MIN 700000 //Raw data minc
 #define RAW_MIN 400000 //Raw data min
 #define RAW_MAX 1300000 //Raw data max
 #define MINHR 50
@@ -69,7 +69,8 @@ int r;
 
 bool PB_ui_afe_enable = false;
 bool PB_smart_ct_service_enable = false;
-static mutex_pt mutex_AFE;
+//static mutex_pt mutex_AFE;
+mutex_pt mutex_AFE;
 mutex_pt prms_AFE;
 sem_pt hAfe4404Sem;
 bool afe4404_enabled = false;
@@ -235,7 +236,7 @@ L_PB_PulseTask_0:
 		current_pc[3] = 1;
 		// OS
 		printf("PB_Pulse task going to sleep\n\n");
-		task_sleep(5);
+		task_sleep(100);
 		scheduler();
 		return;
 	L_PB_PulseTask_1:
@@ -256,7 +257,7 @@ L_PB_PulseTask_3:
 		// OS
 	current_pc[3] = 4;
 	printf("PB_Pulse task going to sleep\n\n");
-	task_sleep(5);
+	task_sleep(100);
 	scheduler();
 	return;
 
@@ -266,7 +267,7 @@ L_PB_PulseTask_4:
 		// OS
 	current_pc[3] = 5;
 	printf("PB_Pulse task going to sleep\n\n");
-	task_sleep(5);
+	task_sleep(100);
 	scheduler();
 	return;
 
@@ -277,7 +278,7 @@ L_PB_PulseTask_5:
 		// OS
 	current_pc[3] = 6;
 	printf("PB_Pulse task going to sleep\n\n");
-	task_sleep(5);
+	task_sleep(100);
 	scheduler();
 	return;
 

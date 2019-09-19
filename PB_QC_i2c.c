@@ -389,21 +389,25 @@ void PB_rev_qc_msg()
 
 	uint16_t cur_qc_read_cnt = 0;
 
+	printf("err = PB_i2c_read_qc(0x13, NULL, 0, &temp_buffer[cur_qc_read_cnt], PB_QC_I2C_READ_COUNT);\n\n");
 	err = PB_i2c_read_qc(0x13, NULL, 0, &temp_buffer[cur_qc_read_cnt], PB_QC_I2C_READ_COUNT);
 	cur_qc_read_cnt += PB_QC_I2C_READ_COUNT;
 
 	while (nrf_drv_gpiote_in_is_set(BOARD_PIN_EXT_INT) == false)
 	{
+		printf("err = PB_i2c_read_qc(0x13, NULL, 0, &temp_buffer[cur_qc_read_cnt], PB_QC_I2C_READ_COUNT);\n\n");
 		err = PB_i2c_read_qc(0x13, NULL, 0, &temp_buffer[cur_qc_read_cnt], PB_QC_I2C_READ_COUNT);
 		cur_qc_read_cnt += PB_QC_I2C_READ_COUNT;
 
 		// OS
+		printf("task %d ging to sleep\n\n", current_tid);
 		task_sleep(100);
 
 		if (cur_qc_read_cnt > 40)
 			break;
 	}
 
+	printf("task %d call PB_parse_qc_msg(temp_buffer)\n\n");
 	PB_parse_qc_msg(temp_buffer);
 
 	free(temp_buffer);

@@ -22,7 +22,8 @@ static void PB_AlarmControl();
 static void processing_glucose_uart_evt(pbUIEvt_t UIevt_Msg);
 static void processing_qc_msg_evt(pbUIEvt_t UIevt_Msg);
 
-static msgq_pt uiMsgq;
+//static msgq_pt uiMsgq;
+msgq_pt uiMsgq;
 static pbQC_t PB_current_qc_conf;
 uint32_t PB_UI_State = UI_STATE_CLOCK;
 uint8_t curAlarmIdx;
@@ -123,7 +124,7 @@ L_PB_UI_Task_0:
 		// OS
 		current_pc[5] = 1;
 		printf("UI task sleep\n\n");
-		task_sleep(5);
+		task_sleep(100);
 		scheduler();
 		return;
 
@@ -134,7 +135,7 @@ L_PB_UI_Task_0:
 L_PB_UI_Task_2:
 	current_pc[5] = 3;
 	printf("UI task sleep\n\n");
-	task_sleep(5);
+	task_sleep(100);
 	scheduler();
 	return;
 
@@ -1056,6 +1057,7 @@ static void processing_glucose_uart_evt(pbUIEvt_t UIevt_Msg)
 	UIevt_Msg.msg = NULL;
 }
 
+//UI.c 에서 호출
 static void processing_qc_msg_evt(pbUIEvt_t UIevt_Msg) {
 	switch (UIevt_Msg.status) {
 	case PB_QC_TEST_START_BUTTON_ST:

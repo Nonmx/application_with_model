@@ -16,8 +16,10 @@ int flag;
 
 uint8_t PB_BLE_event_send(uint8_t UI_evt, uint8_t UI_evt_state, uint8_t* msg);
 
-static sem_pt _ble_evt_sem = NULL;
-static msgq_pt BLE_Msgq;
+//static sem_pt _ble_evt_sem = NULL;
+sem_pt _ble_evt_sem = NULL;
+//static msgq_pt BLE_Msgq;
+msgq_pt BLE_Msgq;
 
 int r;
 void PB_BLE_init() {
@@ -120,17 +122,21 @@ void ble_evt_handler(void) {
 void on_ble_evt() {
 	srand(time(NULL));
 	int random = rand() % 3;
+	printf("on_ble_evt random -> %d\n\n",random);
 
 	switch (random) {
 	case 0:
+		printf("PB_BLE_event_send(PB_BLE_EVT, PB_BLE_CONNECTION_EVT_ST, NULL);\n\n");
 		PB_BLE_event_send(PB_BLE_EVT, PB_BLE_CONNECTION_EVT_ST, NULL);
 		break;
 	case 1:
+		printf("PB_BLE_event_send(PB_BLE_EVT, PB_BLE_DISCONNECTION_EVT_ST, NULL);\n\n");
 		PB_BLE_event_send(PB_BLE_EVT, PB_BLE_DISCONNECTION_EVT_ST, NULL);
 		break;
 	case 2:
 		// not considering the value of temp_msg
 		//	PB_BLE_event_send(PB_BLE_EVT, PB_BLE_PACKET_REV_EVT_ST, temp_msg);
+		printf("PB_BLE_event_send(PB_BLE_EVT, PB_BLE_PACKET_REV_EVT_ST, NULL);\n\n");
 		PB_BLE_event_send(PB_BLE_EVT, PB_BLE_PACKET_REV_EVT_ST, NULL);
 		break;
 	default:
@@ -256,18 +262,19 @@ L_PB_ble_control_task_0:
 			case PB_BLE_CONTROL_EVT: {
 				switch (BLE_msgRxBuffer.status) {
 				case PB_BLE_CONTROL_PNIP_START_ST:
-
+					printf("PB_ble_control -> break\n\n");
 					break;
 				case PB_BLE_CONTROL_PNIP_STOP_ST:
-
+					printf("PB_ble_control -> break\n\n");
 					break;
 				case PB_BLE_TIMEOUT_ST:
-
+					printf("PB_ble_control -> break\n\n");
 					break;
 				case PB_BLE_ACTIVITY_SEND_TIMEOUT_ST:
-
+					printf("PB_ble_control -> break\n\n");
 					break;
 				case PB_BLE_REFRESH:
+					printf("PB_ble_control -> break\n\n");
 					break;
 				}
 
@@ -275,6 +282,7 @@ L_PB_ble_control_task_0:
 			}
 
 			case PB_SMART_CAR_TALK_EVT:
+				printf("PB_ble_control -> break\n\n");
 				break;
 			default:
 				break;

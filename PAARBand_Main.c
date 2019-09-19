@@ -17,7 +17,9 @@ static uint8_t main_task_init_ready = 0;
 static pbQC_t PB_current_qc_conf;
 uint16_t PB_qc_test_bs_min = 0;
 uint16_t PB_qc_test_bs_max = 0;
-static msgq_pt Main_Msgq;
+
+//static msgq_pt Main_Msgq;
+msgq_pt Main_Msgq;
 uint8_t g_glucose_enable = 0;
 sem_pt _uart_tx_evt_sem = NULL;
 pb_afe_save PB_AFE_save;
@@ -28,7 +30,9 @@ void PB_stop_BS_stable_timer();
 void PB_stop_BS_stable_timer() {}
 
 // watch dog refresh handler
-static void PB_wdt_refresh_handler() {
+//static
+void PB_wdt_refresh_handler() {
+	printf("Task%d -> PB_Main_event_send(PB_WDT_REFRESH_EVT, NULL, NULL);", current_tid);
 	PB_Main_event_send(PB_WDT_REFRESH_EVT, NULL, NULL);
 }
 
@@ -39,7 +43,7 @@ uint8_t PB_Main_event_send(uint8_t Main_evt, uint8_t Main_evt_state, uint8_t* ms
 	temp_msg.event = Main_evt;
 	temp_msg.status = Main_evt_state;
 	temp_msg.msg = msg;
-	printf("the msg is %s\n",msg);
+	//printf("the msg is %s\n",msg);
 
 	// OS
 	msgq_send(Main_Msgq, (unsigned char*)& temp_msg);
@@ -59,6 +63,8 @@ bool PB_Schedule_flash_read(pbSchedule_t* schedule_buf, uint8_t* boundary, uint1
 
 	srand(time(NULL));
 	int random = rand() % 2;
+
+	printf("PB_Schedule_flash_read -> random %d\n\n", random);
 
 	if (random == 0) {
 		return false;
@@ -93,7 +99,7 @@ bool PB_QC_flash_test_flash_read() {
 		// written by yshin
 	srand(time(NULL));
 	int random = rand() % 2;
-
+	printf("PB_Schedule_flash_read -> random %d\n\n", random);
 	if (random == 0)
 		return true;
 
@@ -248,7 +254,7 @@ L_PB_Main_Task_0:
 		// OS
 	current_pc[4] = 1;
 	printf("PB_Main going to sleep\n\n");
-	task_sleep(5);
+	task_sleep(100);
 	scheduler();
 	return;
 
@@ -277,7 +283,7 @@ L_PB_Main_Task_1:
 		// OS
 	current_pc[4] = 2;
 	printf("PB_Main going to sleep\n\n");
-	task_sleep(5);
+	task_sleep(100);
 	scheduler();
 	return;
 
@@ -722,22 +728,25 @@ L_PB_Main_Task_4:
 				break;
 
 			case PB_WATCHDOG_CLEAR_EVT:
+				printf("Main task -> break\n\n");
 				break;
 			case PB_GLUCOSE_EVT:
 
 				printf("Main task -> PB_UART_Read_Loop(Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				err = PB_UART_Read_Loop(Main_msgRxBuffer.status, Main_msgRxBuffer.msg);//msg send
-				if (err == 1)
+				if (err == 1) {
 					PB_stop_BS_stable_timer();
+					printf("Main task -> PB_stop_BS_stable_timer();\n\n");
+				}
 				scheduler();
 				current_pc[4] = 19;
 				return;
 			L_PB_Main_Task_19:
 				break;
 			case PB_AFE_CHECK_EVT:
+				printf("Main task -> break\n\n");
 				break;
 			case PB_PAAR_TAG_EVT:
-
 				printf("Main task -> PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);\n\n");
 				PB_UI_event_send(Main_msgRxBuffer.event, Main_msgRxBuffer.status, Main_msgRxBuffer.msg);
 				scheduler();
@@ -775,6 +784,7 @@ L_PB_Main_Task_4:
 					break;
 
 				case PB_SMART_CAR_ACC_CHECK_EVT_ST:
+					printf("Main task BMI160_ACC_avr_check();\n\n");
 					BMI160_ACC_avr_check();
 
 					break;

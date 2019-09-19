@@ -6,6 +6,8 @@
 #include "os.h"
 
 //PB Main Event
+
+
 enum
 {
 	PB_KEY_CHANGE_EVT = 0,
@@ -512,7 +514,9 @@ void set_qc_test_bs_enable(bool val, uint16_t min, uint16_t max);
 bool get_qc_test_bs_enable();
 bool check_qc_test_bs(uint16_t val);
 
-static void PB_wdt_refresh_handler();
+//static void PB_wdt_refresh_handler(); yangsong modify
+void PB_wdt_refresh_handler();
+
 
 #endif /* APPLICATION_PAARBAND_EXE_PAARBAND_SRC_PAARBAND_MAIN_H_ */
 

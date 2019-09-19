@@ -18,7 +18,7 @@ unsigned int PB_i2c_read_qc(uint8_t pSlaveAddress, uint8_t* pWriteBuffer, uint32
 	
 	srand((unsigned)time(NULL));
 	int random = rand() % 2;
-
+	printf("PB_i2c_read_qc -> random %d\n\n", random);
 	if (random == 0)
 		return NRF_SUCCESS;
 
